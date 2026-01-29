@@ -115,9 +115,12 @@ class ModelTrainer:
         
         # Encode categorical features for XGBoost
         if self.model_type == 'xgboost':
+            # Fit LabelEncoder on the union of train and test outlets to avoid unseen labels
             self.le = LabelEncoder()
-            X_train['Outlet'] = self.le.fit_transform(X_train['Outlet'])
-            X_test['Outlet'] = self.le.transform(X_test['Outlet'])
+            combined_outlets = pd.concat([X_train['Outlet'], X_test['Outlet']]).astype(str).unique()
+            self.le.fit(combined_outlets)
+            X_train['Outlet'] = self.le.transform(X_train['Outlet'].astype(str))
+            X_test['Outlet'] = self.le.transform(X_test['Outlet'].astype(str))
         
         logger.info(f"Training data: {len(train_data)} samples ({train_data['Date'].min()} to {train_data['Date'].max()})")
         logger.info(f"Test data: {len(test_data)} samples ({test_data['Date'].min()} to {test_data['Date'].max()})")
