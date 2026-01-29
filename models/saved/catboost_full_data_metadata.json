@@ -1,0 +1,38 @@
+{
+  "model_type": "catboost",
+  "training_period": null,
+  "created_at": "2026-01-29T13:05:17.185324",
+  "data_range": {
+    "train_start": "2024-11-15 00:00:00",
+    "train_end": "2025-01-31 00:00:00"
+  },
+  "metrics": {
+    "mae": 22808.745197693494,
+    "rmse": 37133.02311807196,
+    "r2": 0.5468681077881249,
+    "test_size": 325
+  },
+  "features": [
+    "Outlet",
+    "day",
+    "weekday",
+    "week",
+    "month",
+    "year",
+    "is_weekend",
+    "lag_1",
+    "lag_7",
+    "lag_14",
+    "ma_7",
+    "ma_14"
+  ],
+  "hyperparameters": {
+    "iterations": 1000,
+    "learning_rate": 0.05,
+    "depth": 8,
+    "loss_function": "RMSE",
+    "eval_metric": "RMSE",
+    "random_seed": 42,
+    "verbose": 0
+  }
+}

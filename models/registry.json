@@ -1,0 +1,36 @@
+{
+  "xgboost_full_data": {
+    "model_type": "xgboost",
+    "model_name": "full_data",
+    "version": "1.0.0",
+    "training_period": null,
+    "test_size": 0.2,
+    "catboost_iterations": 1000,
+    "catboost_learning_rate": 0.05,
+    "catboost_depth": 8,
+    "xgboost_n_estimators": 1000,
+    "xgboost_learning_rate": 0.05,
+    "xgboost_max_depth": 8,
+    "xgboost_subsample": 0.8,
+    "xgboost_colsample_bytree": 0.8,
+    "xgboost_reg_alpha": 0.5,
+    "xgboost_reg_lambda": 0.5
+  },
+  "catboost_full_data": {
+    "model_type": "catboost",
+    "model_name": "full_data",
+    "version": "1.0.0",
+    "training_period": null,
+    "test_size": 0.2,
+    "catboost_iterations": 1000,
+    "catboost_learning_rate": 0.05,
+    "catboost_depth": 8,
+    "xgboost_n_estimators": 1000,
+    "xgboost_learning_rate": 0.05,
+    "xgboost_max_depth": 8,
+    "xgboost_subsample": 0.8,
+    "xgboost_colsample_bytree": 0.8,
+    "xgboost_reg_alpha": 0.5,
+    "xgboost_reg_lambda": 0.5
+  }
+}
