@@ -1,5 +1,5 @@
 .venv
-
+.env*
 # Pipeline generated files
 models/saved/
 predictions/
