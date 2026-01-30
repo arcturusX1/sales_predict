@@ -13,8 +13,8 @@ class ModelConfig:
     """Configuration for model training and inference."""
     
     model_type: str  # 'catboost' or 'xgboost'
-    model_name: str  # Unique identifier
-    version: str  # Semantic version
+    model_name: str = ''  # Unique identifier
+    version: str = '1.0.0'  # Semantic version
     training_period: Optional[Dict] = None  # {'year': 2024, 'month': 11} or None for full data
     test_size: float = 0.2
     
@@ -36,26 +36,35 @@ class ModelConfig:
         """Convert config to dictionary."""
         return asdict(self)
     
-    def get_hyperparams(self):
-        """Get hyperparameters for the configured model type."""
-        if self.model_type == 'catboost':
+    @staticmethod
+    def get_default_hyperparams(model_type: str) -> Dict:
+        """
+        Get default hyperparameters for a model type without instantiation.
+        
+        Args:
+            model_type: 'catboost' or 'xgboost'
+        
+        Returns:
+            Dictionary of default hyperparameters
+        """
+        if model_type == 'catboost':
             return {
-                'iterations': self.catboost_iterations,
-                'learning_rate': self.catboost_learning_rate,
-                'depth': self.catboost_depth,
+                'iterations': 1000,
+                'learning_rate': 0.05,
+                'depth': 8,
             }
-        elif self.model_type == 'xgboost':
+        elif model_type == 'xgboost':
             return {
-                'n_estimators': self.xgboost_n_estimators,
-                'learning_rate': self.xgboost_learning_rate,
-                'max_depth': self.xgboost_max_depth,
-                'subsample': self.xgboost_subsample,
-                'colsample_bytree': self.xgboost_colsample_bytree,
-                'reg_alpha': self.xgboost_reg_alpha,
-                'reg_lambda': self.xgboost_reg_lambda,
+                'n_estimators': 1000,
+                'learning_rate': 0.05,
+                'max_depth': 8,
+                'subsample': 0.8,
+                'colsample_bytree': 0.8,
+                'reg_alpha': 0.5,
+                'reg_lambda': 0.5,
             }
         else:
-            raise ValueError(f"Unknown model type: {self.model_type}")
+            raise ValueError(f"Unknown model type: {model_type}")
     
     @classmethod
     def from_dict(cls, data: Dict):

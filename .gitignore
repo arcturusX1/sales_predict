@@ -1,1 +1,28 @@
 .venv
+
+# Pipeline generated files
+models/saved/
+predictions/
+results/
+catboost_info/
+
+# Training artifacts
+*.json
+*.cbm
+*.pkl
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

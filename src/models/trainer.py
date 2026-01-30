@@ -18,6 +18,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from ..utils.features import FeatureEngineer
+from ..config import ModelConfig
 
 
 logger = logging.getLogger(__name__)
@@ -51,31 +52,38 @@ class ModelTrainer:
         self.metadata = {}
         self.test_metrics = {}
     
-    def _get_default_hyperparams(self):
-        """Get default hyperparameters for the model."""
+    def _get_hyperparams(self, hyperparams=None):
+        """
+        Get hyperparameters from ModelConfig defaults or custom overrides.
+        
+        Args:
+            hyperparams: Custom hyperparameters to override defaults
+        
+        Returns:
+            Dictionary of hyperparameters with model-specific extras
+        """
+        # Get default hyperparameters without instantiating ModelConfig
+        default_params = ModelConfig.get_default_hyperparams(self.model_type)
+        
+        # Add extra parameters not in ModelConfig
         if self.model_type == 'catboost':
-            return {
-                'iterations': 1000,
-                'learning_rate': 0.05,
-                'depth': 8,
+            default_params.update({
                 'loss_function': 'RMSE',
                 'eval_metric': 'RMSE',
                 'random_seed': 42,
                 'verbose': 0
-            }
+            })
         else:  # xgboost
-            return {
-                'n_estimators': 1000,
-                'learning_rate': 0.05,
-                'max_depth': 8,
-                'subsample': 0.8,
-                'colsample_bytree': 0.8,
-                'min_child_weight': 1,
-                'reg_alpha': 0.5,
-                'reg_lambda': 0.5,
+            default_params.update({
                 'random_state': 42,
                 'verbosity': 0
-            }
+            })
+        
+        # Override with custom parameters if provided
+        if hyperparams:
+            default_params.update(hyperparams)
+        
+        return default_params
     
     def _prepare_data(self, df, train_period=None, test_period=None, test_size=0.2):
         """
@@ -145,10 +153,8 @@ class ModelTrainer:
             df, train_period=train_period, test_size=test_size
         )
         
-        # Get hyperparameters
-        params = self._get_default_hyperparams()
-        if hyperparams:
-            params.update(hyperparams)
+        # Get hyperparameters (from ModelConfig defaults + custom overrides)
+        params = self._get_hyperparams(hyperparams)
         
         # Train model
         logger.info(f"Training {self.model_type} model with {len(X_train)} samples...")
