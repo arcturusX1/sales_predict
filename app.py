@@ -34,6 +34,9 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Mount static files so templates can load CSS/JS under /static
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 # Add CORS middleware for frontend access
 app.add_middleware(
     CORSMiddleware,
